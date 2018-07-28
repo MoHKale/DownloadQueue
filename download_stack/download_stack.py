@@ -10,6 +10,8 @@ class DownloadThread(Thread):
             daemon = True
         )
         
+        self.dstack = dstack
+        
     def _target_method(self, args, kwargs):
         dc_instance = self.download_class(*args, **kwargs)
         dc_instance.download() # Begin Downloading Target
@@ -84,7 +86,7 @@ class DownloadStack(object):
         dt.start() # Start Download Thread
         
     def _all_complete(self):
-        return len(self._stack_contents) > 0 or len(self._overflow_queue) > 0 
+        return len(self._stack_contents) == 0 and len(self._overflow_queue) == 0 
         
     def _is_ready(self,):
         return len(self._stack_contents) != len(self)
@@ -94,62 +96,15 @@ class DownloadStack(object):
         
         if not(self._overflow_queue.empty):
             self._add(self._overflow_queue.dequeue())
-        
+            
     def remove_index(self, index):
         self.remove(self._stack_contents[index])
     
     def wait_to_finish(self):
-        while not(self._all_complete):
+        while not(self._all_complete()):
             pass # Ignore
     
     @property
     def ready(self): return self._is_ready()
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
