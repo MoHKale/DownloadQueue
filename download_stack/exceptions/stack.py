@@ -1,0 +1,2 @@
+class OverflowQueueIsEmptyException(Exception):
+    pass
