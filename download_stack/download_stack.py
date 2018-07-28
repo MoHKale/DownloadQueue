@@ -1,6 +1,6 @@
 from .download import GenericDownload
 from threading import Thread
-from .exceptions.stack import *
+from .exceptions import *
 
 class DownloadThread(Thread):
     def __init__(self, dstack, *args, **kwargs):
