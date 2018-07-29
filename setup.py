@@ -10,7 +10,7 @@ setuptools.setup(
     auther_email='Mohkalsin@gmail.com',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='https://github.com/MoHKale/KissManga-API',
+    url='https://github.com/MoHKale/DownloadQueue',
     packages=setuptools.find_packages(),
     classifiers=(
         "Programming Language :: Python :: 3",
