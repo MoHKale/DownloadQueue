@@ -5,7 +5,7 @@ with open('README.MD', 'r') as File:
 
 setuptools.setup(
     name='download_queue',
-    version='1.0.0',
+    version='1.0.1',
     author='Mohkale',
     auther_email='Mohkalsin@gmail.com',
     long_description=long_description,

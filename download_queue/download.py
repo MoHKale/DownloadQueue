@@ -67,6 +67,8 @@ class GenericDownload(DownloadParent):
             return decorator
         
     def __init__(self, url, path, **kwargs):
+        self.local_file_instance = open(self.path, 'wb') # Open file for writing
+        
         self._chunk_size         = kwargs.pop('chunk_size', DEFAULT_CHUNK_SIZE)
         self._headers            = kwargs.pop('headers', HEADERS)
         self._cookies            = kwargs.pop('cookies', COOKIES)
@@ -82,6 +84,10 @@ class GenericDownload(DownloadParent):
         #endregion
     
         super().__init__(url, path, **kwargs) # Call Parent Constructor
+        
+    def __del__(self):
+        if not(self.local_file_instance.closed):
+            self.local_file_instance.close()
     
     @Decorators.download_retry(MINIMUM_ATTEMPT_COUNT)
     @Decorators.write_exception('DownloadError.error')
@@ -101,13 +107,16 @@ class GenericDownload(DownloadParent):
                 self._file_size =  int(request_response.headers.get('Content-Length', 0))
                 self._downloaded_size = 0 # Assign values to both file size and downloaded
                 
-                with open(self.path, 'wb') as local_file_instance:
-                    for chunk in request_response.iter_content(self._chunk_size):
-                        if not(chunk): continue # If some error in byte retrieval
+                self.local_file_instance.truncate(0) # erase file contents
+                
+                for chunk in request_response.iter_content(self._chunk_size):
+                    if not(chunk): continue # If some error in byte retrieval
                         
-                        self._downloaded_size += len(chunk) # Increment chunk size
-                        local_file_instance.write(chunk)   # Write byte to file
-                        local_file_instance.flush()        # Clears file buffer
+                    self._downloaded_size += len(chunk) # Increment chunk size
+                    self.local_file_instance.write(chunk)   # Write byte to file
+                    self.local_file_instance.flush()        # Clears file buffer
+                
+                self.local_file_instance.close() # File has been written to
         except Exception as e: 
             self._failed, self._download_error = True, e
         else: 
