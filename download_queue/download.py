@@ -67,7 +67,7 @@ class GenericDownload(DownloadParent):
             return decorator
         
     def __init__(self, url, path, **kwargs):
-        self.local_file_instance = open(self.path, 'wb') # Open file for writing
+        self.local_file_instance = open(path, 'wb') # Open file for writing
         
         self._chunk_size         = kwargs.pop('chunk_size', DEFAULT_CHUNK_SIZE)
         self._headers            = kwargs.pop('headers', HEADERS)
