@@ -1,4 +1,4 @@
-from .download import GenericDownload
+from .generic_download import GenericDownload
 from threading import Thread
 from .exceptions import *
 
