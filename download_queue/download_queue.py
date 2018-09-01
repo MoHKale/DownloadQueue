@@ -13,13 +13,12 @@ class DownloadThread(Thread):
         self.dqueue = dqueue
         
     def _target_method(self, args, kwargs):
-        dc_instance = self.download_class(*args, **kwargs)
-        dc_instance.download() # Begin Downloading Target
+        dc_instance = kwargs.pop('download_class', GenericDownload)(*args, **kwargs)
         
+        #region begin download then dequeue self
+        dc_instance.download() # Begin Downloading Target
         self.dqueue.remove(self) # delete current thread
-    
-    download_class = GenericDownload
-
+        #endregion
 
 class OverflowQueue(object):
     """Queue To Store Overflowed Download Requests For Download Queue"""
