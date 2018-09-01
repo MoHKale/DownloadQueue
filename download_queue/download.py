@@ -7,23 +7,23 @@ from requests import get as urlretrieve
 from traceback import print_tb as print_traceback
 from datetime import datetime
 ## Create Upon Completion
+from enum import IntEnum
 
-class DownloadParent(object):
-    def __init__(self, url, path, avoid_write_on_error=False): 
-        self.url, self.path  = url, path
+class DownloadStatus(IntEnum):
+    NotBegun    = 0
+    Downloading = 1
+    Complete    = 2
+    Failed      = 3
+
     
+class DownloadParent(AbstractClass):
+    """Generic Class From Which All Downloaders Should Extend"""
     @abstractmethod
-    def download(self): 
+    def download(self):
+        """Actually Performs The Dowload"""
         pass
         
     @abstractproperty
-    def complete(self):
-        pass
-        
-    @abstractproperty
-    def failed(self):
-        pass
-
 class GenericDownload(DownloadParent):
     class Decorators(object):
         @staticmethod # Not callable as class method
