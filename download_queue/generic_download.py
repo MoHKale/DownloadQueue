@@ -12,6 +12,7 @@ from .constants import (
 from functools import wraps
 from time import sleep
 from datetime import datetime
+import traceback
 
 class UnknownKeywordArgumentsGivenException(Exception):
     pass
@@ -56,6 +57,13 @@ class Decorators(object):
                 return func(self, *args, **kwargs)
             except (KeyboardInterrupt, Exception) as e:
                 self.status = DownloadStatus.Failed
+
+                with open('download_error.txt', 'a', encoding='utf8') as File:
+                    #File.write(f'Unable To Download {download_target}\n')
+                    File.write("{func}, {args}, {kwargs}\n")
+                    File.write(traceback.format_exc())
+                    File.write('\n'+('----' * 30)+'\n')
+                
                 raise e # re raise to top stack
         return wrapped
 
