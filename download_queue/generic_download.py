@@ -29,7 +29,7 @@ class Decorators(object):
                         return func(*args, **kwargs)
                     except Exception as e:
                         if X == attempt_count - 1:
-                            raise e # re raise on last 
+                            break # raise e # re raise on last 
             return wrapped
         return decorator
     
@@ -82,9 +82,9 @@ class GenericDownload(DownloadParent):
         if len(kwargs) != 0: # Any unremoved keyword arguments
             raise UnknownKeywordArgumentsGivenException(kwargs)
 
-    @Decorators.mark_status_as_failure
     @Decorators.try_upto_x_times(MINIMUM_ATTEMPT_COUNT)
     @Decorators.delay_exception(DEFAULT_WAIT_ON_FAILURE)
+    @Decorators.mark_status_as_failure
     def download(self):
         if self.status == DownloadStatus.Downloading:
             return # Begun on seperate thread
