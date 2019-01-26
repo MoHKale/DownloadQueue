@@ -89,14 +89,15 @@ class GenericDownload(DownloadParent):
         if self.status == DownloadStatus.Downloading:
             return # Begun on seperate thread
         
-        self.status = DownloadStatus.Downloading # Assign
-        
-        with open(self.path, 'wb') as local_file_instance:
-            for chunk in self._iterate_response_chunks(self.url):
+        self.status = DownloadStatus.Downloading
+        self._download(self.url, self.path)
+        self.status = DownloadStatus.Complete
+
+    def _download(self, url, path):
+        with open(path, 'wb') as local_file_instance:
+            for chunk in self._iterate_response_chunks(url):
                 local_file_instance.write(chunk) # Write byte to file
                 local_file_instance.flush() # Clears file buffer
-        
-        self.status = DownloadStatus.Complete
         
     def _iterate_response_chunks(self, url):
         request_response = urlretrieve(
