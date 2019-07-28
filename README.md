@@ -1,2 +1,2 @@
 # DownloadQueue
-Simple Class To Provide Download Facilities on a Separate Thread.
+fascilities for Thread based concurrent file transfers.

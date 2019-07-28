@@ -1,13 +1,13 @@
 import setuptools
 
 with open('README.md', 'r') as File:
-    long_description = File.read() 
+    long_description = File.read()
 
 setuptools.setup(
     name='download_queue',
-    version='1.1.3',
+    version='2.0.0',
     author='Mohkale',
-    auther_email='Mohkalsin@gmail.com',
+    auther_email='mohkalsin@gmail.com',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url='https://github.com/MoHKale/DownloadQueue',
